@@ -1,0 +1,28 @@
+# project-specific
+# ----------------
+target/
+build/
+
+# directory-based project format
+# ------------------------------
+.idea/
+
+# file-based project format
+# -------------------------
+*.iml
+*.ipr
+*.iws
+
+# package files
+# -------------
+*.jar
+# for bitbucket pipeline
+!gradle/wrapper/*.jar
+*.war
+*.ear
+
+# other
+# -----
+*.class
+bin/
+.gradle/

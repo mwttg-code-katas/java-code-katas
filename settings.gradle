@@ -1,0 +1,4 @@
+rootProject.name = 'java-code-katas'
+include 'commons'
+include 'kata_2018-12-number-scanner'
+
