@@ -1,10 +1,16 @@
 package org.code.kata.number.scanner;
 
+import io.vavr.collection.List;
+
 import static io.vavr.API.$;
 import static io.vavr.API.Case;
 import static io.vavr.API.Match;
 
 class Transformer {
+  static List<Integer> convert(final List<String> lcdNumbers) {
+    return lcdNumbers.map(Transformer::toNumber);
+  }
+
   static int toNumber(final String input) {
     return Match(input).of(
         Case($(" _ | ||_|"), 0),
