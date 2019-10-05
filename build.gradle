@@ -16,13 +16,15 @@ subprojects {
 
   ext {
     assertJVersion = "3.13.2"
-    lombockVersion = "1.18.10.0"
+    guavaVersion = "28.1-jre"
+    lombockVersion = "1.18.10"
     testNgVersion = "7.0.0"
     vavrVersion = "1.0.0-alpha-3"
   }
 
   dependencies {
     implementation(group: 'io.vavr', name: 'vavr', version: vavrVersion)
+    implementation(group: 'com.google.guava', name: 'guava', version: guavaVersion)
 
     testImplementation(group: 'org.assertj', name: 'assertj-core', version: assertJVersion)
     testImplementation(group: 'org.testng', name: 'testng', version: testNgVersion)
