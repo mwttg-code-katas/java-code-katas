@@ -1,5 +1,7 @@
 package org.drink.dispenser;
 
-public interface Currency {
+import java.util.Comparator;
+
+public interface Currency extends Comparator<Integer> {
   int value();
 }

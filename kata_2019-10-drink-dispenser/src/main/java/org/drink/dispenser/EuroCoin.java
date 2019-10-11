@@ -1,5 +1,7 @@
 package org.drink.dispenser;
 
+import com.google.common.collect.ComparisonChain;
+
 public enum EuroCoin implements Currency {
   CENT10(10),
   
@@ -20,5 +22,13 @@ public enum EuroCoin implements Currency {
   @Override
   public int value() {
     return value;
+  }
+
+  @Override
+  public int compare(final Integer left, final Integer right) {
+    return ComparisonChain
+            .start()
+            .compare(left, right)
+            .result();
   }
 }
