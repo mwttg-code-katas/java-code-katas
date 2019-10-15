@@ -14,8 +14,7 @@ public class CashBox {
     private Map<Currency, Integer> inventory;
 
     public CashBox(final Map<Currency, Integer> inventory) {
-        checkNotNull(inventory);
-        this.inventory = inventory;
+        this.inventory = checkNotNull(inventory);
     }
 
     public Map<Currency, Integer> getInventory() {

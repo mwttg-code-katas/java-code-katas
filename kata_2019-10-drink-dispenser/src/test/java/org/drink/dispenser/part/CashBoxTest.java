@@ -4,7 +4,6 @@ import io.vavr.Tuple2;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.List;
 import io.vavr.collection.Map;
-import org.drink.dispenser.part.CashBox;
 import org.drink.dispenser.money.Currency;
 import org.testng.annotations.Test;
 
