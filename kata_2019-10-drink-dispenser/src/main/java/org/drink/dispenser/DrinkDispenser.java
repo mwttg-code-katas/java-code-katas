@@ -37,4 +37,13 @@ public class DrinkDispenser {
                 Case($None(), new Tuple2<>(Option.none(), toMap(coins)))
         );
     }
+
+    public void prettyPrint() {
+        System.out.println("Automate status");
+        System.out.println("----------------------------");
+        System.out.println("    Money:");
+        cashBox.getInventory().forEach(item -> System.out.println(String.format("        %s ............... %s", item._1(), item._2)));
+        System.out.println("    Commodity:");
+        drinkBox.getInventory().forEach(item -> System.out.println(String.format("        %s ............... %s", item._1(), item._2)));
+    }
 }
