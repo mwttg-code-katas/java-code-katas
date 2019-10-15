@@ -1,4 +1,4 @@
-package org.drink.dispenser.drink;
+package org.drink.dispenser.commodity;
 
 public enum Drink implements Commodity {
     WATER(80),

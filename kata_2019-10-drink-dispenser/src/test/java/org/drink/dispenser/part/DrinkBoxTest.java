@@ -4,13 +4,13 @@ import io.vavr.Tuple2;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.Map;
 import io.vavr.control.Option;
-import org.drink.dispenser.drink.Commodity;
+import org.drink.dispenser.commodity.Commodity;
 import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.drink.dispenser.drink.Drink.DUFF_BEER;
-import static org.drink.dispenser.drink.Drink.NUKA_COLA;
-import static org.drink.dispenser.drink.Drink.WATER;
+import static org.drink.dispenser.commodity.Drink.DUFF_BEER;
+import static org.drink.dispenser.commodity.Drink.NUKA_COLA;
+import static org.drink.dispenser.commodity.Drink.WATER;
 
 public class DrinkBoxTest {
 

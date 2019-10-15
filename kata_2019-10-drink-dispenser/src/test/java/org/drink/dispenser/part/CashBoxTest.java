@@ -4,6 +4,7 @@ import io.vavr.Tuple2;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.List;
 import io.vavr.collection.Map;
+import io.vavr.control.Option;
 import org.drink.dispenser.money.Currency;
 import org.testng.annotations.Test;
 
@@ -156,9 +157,19 @@ public class CashBoxTest {
         );
         final CashBox subject = new CashBox(inventory);
 
-        final Tuple2<Boolean, Map<Currency, Integer>> actual = subject.exchange(130, EURO2);
-        assertThat(actual._1).isTrue();
-        assertThat(actual._2).containsExactlyInAnyOrder(new Tuple2<>(CENT50, 1), new Tuple2<>(CENT20, 1));
+        final Option<Map<Currency, Integer>> actual = subject.exchange(130, EURO2);
+        assertThat(actual.get()).containsExactlyInAnyOrder(new Tuple2<>(CENT50, 1), new Tuple2<>(CENT20, 1));
     }
 
+    @Test
+    public void testExchange_moneyInInventoryIsMissing() {
+        final Map<Currency, Integer> inventory = HashMap.of(
+                CENT10, 0,
+                CENT20, 0
+        );
+        final CashBox subject = new CashBox(inventory);
+
+        final Option<Map<Currency, Integer>> actual = subject.exchange(130, EURO2);
+        assertThat(actual).isEqualTo(Option.none());
+    }
 }

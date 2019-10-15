@@ -1,14 +1,13 @@
 package org.drink.dispenser.part;
 
-import io.vavr.Tuple2;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.List;
 import io.vavr.collection.Map;
+import io.vavr.control.Option;
 import org.drink.dispenser.money.Currency;
 
-import java.util.Arrays;
-
 import static com.google.common.base.Preconditions.checkNotNull;
+import static org.drink.dispenser.Utilities.toList;
 
 public class CashBox {
     private Map<Currency, Integer> inventory;
@@ -21,14 +20,13 @@ public class CashBox {
         return inventory;
     }
 
-    public Tuple2<Boolean, Map<Currency, Integer>> exchange(final int price, final Currency... insertCoins) {
+    public Option<Map<Currency, Integer>> exchange(final int price, final Currency... insertCoins) {
         final Map<Currency, Integer> neededExchange = neededForExchange(price, insertCoins);
         if (enoughCoinsAvailable(neededExchange)) {
             insertCoins(insertCoins);
-            return new Tuple2<>(true, releaseCoins(neededExchange));
+            return Option.some(releaseCoins(neededExchange));
         } else {
-            final Map<Currency, Integer> insertAsMap = toList(insertCoins).map(item -> new Tuple2<>(item, 1)).collect(HashMap.collector());
-            return new Tuple2<>(false, insertAsMap);
+            return Option.none();
         }
     }
 
@@ -82,9 +80,5 @@ public class CashBox {
 
     List<Currency> availableCoins() {
         return inventory.keySet().toList().sorted().reverse();
-    }
-
-    private List<Currency> toList(final Currency... coins) {
-        return List.ofAll(Arrays.asList(coins));
     }
 }

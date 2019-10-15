@@ -2,7 +2,7 @@ package org.drink.dispenser.part;
 
 import io.vavr.collection.Map;
 import io.vavr.control.Option;
-import org.drink.dispenser.drink.Commodity;
+import org.drink.dispenser.commodity.Commodity;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static io.vavr.API.$;
