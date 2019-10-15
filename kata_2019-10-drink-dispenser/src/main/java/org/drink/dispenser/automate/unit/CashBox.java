@@ -1,4 +1,4 @@
-package org.drink.dispenser.part;
+package org.drink.dispenser.automate.unit;
 
 import io.vavr.collection.HashMap;
 import io.vavr.collection.List;

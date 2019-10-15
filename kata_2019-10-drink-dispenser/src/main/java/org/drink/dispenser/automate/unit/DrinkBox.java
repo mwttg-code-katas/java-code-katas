@@ -1,4 +1,4 @@
-package org.drink.dispenser.part;
+package org.drink.dispenser.automate.unit;
 
 import io.vavr.collection.Map;
 import io.vavr.control.Option;
@@ -11,6 +11,7 @@ import static io.vavr.API.Match;
 import static io.vavr.Patterns.$None;
 import static io.vavr.Patterns.$Some;
 
+// TODO think about extracting similarities of DrinkBox and CashBox (the Maps + methods)
 public class DrinkBox {
     private Map<Commodity, Integer> inventory;
 

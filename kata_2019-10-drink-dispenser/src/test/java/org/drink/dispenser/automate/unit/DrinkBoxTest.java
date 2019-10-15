@@ -1,10 +1,11 @@
-package org.drink.dispenser.part;
+package org.drink.dispenser.automate.unit;
 
 import io.vavr.Tuple2;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.Map;
 import io.vavr.control.Option;
 import org.drink.dispenser.commodity.Commodity;
+import org.drink.dispenser.automate.unit.DrinkBox;
 import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

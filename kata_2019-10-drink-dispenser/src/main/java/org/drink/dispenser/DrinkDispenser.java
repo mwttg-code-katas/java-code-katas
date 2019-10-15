@@ -5,8 +5,8 @@ import io.vavr.collection.Map;
 import io.vavr.control.Option;
 import org.drink.dispenser.commodity.Commodity;
 import org.drink.dispenser.money.Currency;
-import org.drink.dispenser.part.CashBox;
-import org.drink.dispenser.part.DrinkBox;
+import org.drink.dispenser.automate.unit.CashBox;
+import org.drink.dispenser.automate.unit.DrinkBox;
 
 import static io.vavr.API.$;
 import static io.vavr.API.Case;
