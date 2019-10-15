@@ -1,4 +1,4 @@
-package org.drink.dispenser;
+package org.drink.dispenser.money;
 
 import java.util.Comparator;
 
