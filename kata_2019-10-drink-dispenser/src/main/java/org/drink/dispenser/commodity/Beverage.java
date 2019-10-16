@@ -1,6 +1,6 @@
 package org.drink.dispenser.commodity;
 
-public enum Drink implements Commodity {
+public enum Beverage implements Commodity {
     WATER(80),
 
     NUKA_COLA(120),
@@ -13,7 +13,7 @@ public enum Drink implements Commodity {
 
     private final int price;
 
-    Drink(final int price) {
+    Beverage(final int price) {
         this.price = price;
     }
 

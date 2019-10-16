@@ -5,15 +5,14 @@ import io.vavr.collection.HashMap;
 import io.vavr.collection.Map;
 import io.vavr.control.Option;
 import org.drink.dispenser.commodity.Commodity;
-import org.drink.dispenser.automate.unit.DrinkBox;
 import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.drink.dispenser.commodity.Drink.DUFF_BEER;
-import static org.drink.dispenser.commodity.Drink.NUKA_COLA;
-import static org.drink.dispenser.commodity.Drink.WATER;
+import static org.drink.dispenser.commodity.Beverage.DUFF_BEER;
+import static org.drink.dispenser.commodity.Beverage.NUKA_COLA;
+import static org.drink.dispenser.commodity.Beverage.WATER;
 
-public class DrinkBoxTest {
+public class BeverageUnitTest {
 
     @Test
     public void testReleaseDrink_drinkExists() {
@@ -21,7 +20,7 @@ public class DrinkBoxTest {
                 NUKA_COLA, 100,
                 WATER, 10
         );
-        final DrinkBox subject = new DrinkBox(inventory);
+        final BeverageUnit subject = new BeverageUnit(inventory);
 
         final Option<Commodity> actual = subject.releaseDrink(NUKA_COLA);
         assertThat(actual).isEqualTo(Option.some(NUKA_COLA));
@@ -36,7 +35,7 @@ public class DrinkBoxTest {
                 NUKA_COLA, 100,
                 WATER, 0
         );
-        final DrinkBox subject = new DrinkBox(inventory);
+        final BeverageUnit subject = new BeverageUnit(inventory);
 
         final Option<Commodity> actual = subject.releaseDrink(WATER);
         assertThat(actual).isEqualTo(Option.none());
@@ -51,7 +50,7 @@ public class DrinkBoxTest {
                 NUKA_COLA, 100,
                 WATER, 80
         );
-        final DrinkBox subject = new DrinkBox(inventory);
+        final BeverageUnit subject = new BeverageUnit(inventory);
 
         final Option<Commodity> actual = subject.releaseDrink(DUFF_BEER);
         assertThat(actual).isEqualTo(Option.none());

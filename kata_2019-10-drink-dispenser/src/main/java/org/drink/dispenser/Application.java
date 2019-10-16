@@ -5,22 +5,22 @@ import io.vavr.collection.HashMap;
 import io.vavr.collection.Map;
 import io.vavr.control.Option;
 import org.drink.dispenser.commodity.Commodity;
-import org.drink.dispenser.money.Currency;
+import org.drink.dispenser.money.CurrencyCoins;
 
-import static org.drink.dispenser.commodity.Drink.BOOTY_SWEAT;
-import static org.drink.dispenser.commodity.Drink.DUFF_BEER;
-import static org.drink.dispenser.commodity.Drink.NUKA_COLA;
-import static org.drink.dispenser.commodity.Drink.NUKA_COLA_QUANTUM;
-import static org.drink.dispenser.commodity.Drink.WATER;
-import static org.drink.dispenser.money.EuroCoin.CENT10;
-import static org.drink.dispenser.money.EuroCoin.CENT20;
-import static org.drink.dispenser.money.EuroCoin.CENT50;
-import static org.drink.dispenser.money.EuroCoin.EURO1;
-import static org.drink.dispenser.money.EuroCoin.EURO2;
+import static org.drink.dispenser.commodity.Beverage.BOOTY_SWEAT;
+import static org.drink.dispenser.commodity.Beverage.DUFF_BEER;
+import static org.drink.dispenser.commodity.Beverage.NUKA_COLA;
+import static org.drink.dispenser.commodity.Beverage.NUKA_COLA_QUANTUM;
+import static org.drink.dispenser.commodity.Beverage.WATER;
+import static org.drink.dispenser.money.Euro.CENT10;
+import static org.drink.dispenser.money.Euro.CENT20;
+import static org.drink.dispenser.money.Euro.CENT50;
+import static org.drink.dispenser.money.Euro.EURO1;
+import static org.drink.dispenser.money.Euro.EURO2;
 
 public class Application {
     public static void main(String[] args) {
-        final Map<Currency, Integer> dispenserCash = HashMap.of(
+        final Map<CurrencyCoins, Integer> dispenserCash = HashMap.of(
                 EURO2, 100,
                 EURO1, 100,
                 CENT50, 100,
@@ -37,7 +37,7 @@ public class Application {
         drinkDispenser.prettyPrint();
 
         System.out.println(String.format("\n You try to buy a %s with the following coins: %s %s %s", NUKA_COLA_QUANTUM, EURO2, EURO1, EURO1));
-        final Tuple2<Option<Commodity>, Map<Currency, Integer>> result = drinkDispenser.buy(NUKA_COLA_QUANTUM, EURO2, EURO1, EURO1);
+        final Tuple2<Option<Commodity>, Map<CurrencyCoins, Integer>> result = drinkDispenser.buy(NUKA_COLA_QUANTUM, EURO2, EURO1, EURO1);
 
         System.out.println(String.format("\n Your transactions results in %s", result));
         System.out.println();

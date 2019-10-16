@@ -12,23 +12,18 @@ import static io.vavr.Patterns.$None;
 import static io.vavr.Patterns.$Some;
 
 // TODO think about extracting similarities of DrinkBox and CashBox (the Maps + methods)
-public class DrinkBox {
-    private Map<Commodity, Integer> inventory;
+public class BeverageUnit extends Unit<Commodity> {
 
-    public DrinkBox(final Map<Commodity, Integer> inventory) {
-        this.inventory = checkNotNull(inventory);
-    }
-
-    public Map<Commodity, Integer> getInventory() {
-        return inventory;
+    public BeverageUnit(final Map<Commodity, Integer> inventory) {
+        super(inventory);
     }
 
     public Option<Commodity> releaseDrink(final Commodity drink) {
-        final Option<Integer> maybe = inventory.get(drink);
+        final Option<Integer> maybe = getInventory().get(drink);
         return Match(maybe).of(
                 Case($Some($()), amount -> {
                     if (amount > 0) {
-                        inventory = inventory.put(drink, amount - 1);
+                        setInventory(getInventory().put(drink, amount - 1));
                         return Option.some(drink);
                     } else {
                         return Option.none();

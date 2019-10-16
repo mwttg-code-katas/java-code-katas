@@ -2,7 +2,7 @@ package org.drink.dispenser.money;
 
 import com.google.common.collect.ComparisonChain;
 
-public enum EuroCoin implements Currency {
+public enum Euro implements CurrencyCoins {
   CENT10(10),
   
   CENT20(20),
@@ -15,7 +15,7 @@ public enum EuroCoin implements Currency {
   
   private final int value;
   
-  EuroCoin(final int value) {
+  Euro(final int value) {
     this.value = value;
   }
   

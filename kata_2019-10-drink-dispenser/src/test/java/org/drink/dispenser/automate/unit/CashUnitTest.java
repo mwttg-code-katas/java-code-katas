@@ -5,37 +5,36 @@ import io.vavr.collection.HashMap;
 import io.vavr.collection.List;
 import io.vavr.collection.Map;
 import io.vavr.control.Option;
-import org.drink.dispenser.money.Currency;
-import org.drink.dispenser.automate.unit.CashBox;
+import org.drink.dispenser.money.CurrencyCoins;
 import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.drink.dispenser.money.EuroCoin.*;
+import static org.drink.dispenser.money.Euro.*;
 
-public class CashBoxTest {
+public class CashUnitTest {
     @Test
     public void testAvailableCoins() {
-        final Map<Currency, Integer> inventory = HashMap.of(
+        final Map<CurrencyCoins, Integer> inventory = HashMap.of(
                 CENT10, 4,
                 CENT20, 1,
                 EURO2, 5
         );
-        final CashBox subject = new CashBox(inventory);
+        final CashUnit subject = new CashUnit(inventory);
 
-        final List<Currency> actual = subject.availableCoins();
+        final List<CurrencyCoins> actual = subject.availableCoins();
         assertThat(actual).containsExactly(EURO2, CENT20, CENT10);
     }
 
     @Test
     public void testEnoughCoinsAvailable_true() {
-        final Map<Currency, Integer> inventory = HashMap.of(
+        final Map<CurrencyCoins, Integer> inventory = HashMap.of(
                 CENT10, 2,
                 CENT20, 2,
                 EURO2, 5
         );
-        final CashBox subject = new CashBox(inventory);
+        final CashUnit subject = new CashUnit(inventory);
 
-        final Map<Currency, Integer> needed = HashMap.of(
+        final Map<CurrencyCoins, Integer> needed = HashMap.of(
                 CENT10, 2,
                 CENT20, 2
         );
@@ -45,14 +44,14 @@ public class CashBoxTest {
 
     @Test
     public void testEnoughCoinsAvailable_false() {
-        final Map<Currency, Integer> inventory = HashMap.of(
+        final Map<CurrencyCoins, Integer> inventory = HashMap.of(
                 CENT10, 2,
                 CENT20, 1,
                 EURO2, 5
         );
-        final CashBox subject = new CashBox(inventory);
+        final CashUnit subject = new CashUnit(inventory);
 
-        final Map<Currency, Integer> needed = HashMap.of(
+        final Map<CurrencyCoins, Integer> needed = HashMap.of(
                 CENT10, 2,
                 CENT20, 2
         );
@@ -62,14 +61,14 @@ public class CashBoxTest {
 
     @Test
     public void testEnoughCoinsAvailable_false_sortOfCoinNotAvailable() {
-        final Map<Currency, Integer> inventory = HashMap.of(
+        final Map<CurrencyCoins, Integer> inventory = HashMap.of(
                 CENT10, 2,
                 CENT20, 1,
                 EURO2, 5
         );
-        final CashBox subject = new CashBox(inventory);
+        final CashUnit subject = new CashUnit(inventory);
 
-        final Map<Currency, Integer> needed = HashMap.of(
+        final Map<CurrencyCoins, Integer> needed = HashMap.of(
                 CENT50, 1
         );
         final boolean actual = subject.enoughCoinsAvailable(needed);
@@ -78,19 +77,19 @@ public class CashBoxTest {
 
     @Test
     public void testReleaseCoins() {
-        final Map<Currency, Integer> inventory = HashMap.of(
+        final Map<CurrencyCoins, Integer> inventory = HashMap.of(
                 CENT10, 2,
                 CENT20, 2,
                 EURO2, 5
         );
-        final CashBox subject = new CashBox(inventory);
+        final CashUnit subject = new CashUnit(inventory);
 
-        final Map<Currency, Integer> needed = HashMap.of(
+        final Map<CurrencyCoins, Integer> needed = HashMap.of(
                 CENT10, 1,
                 CENT20, 1,
                 EURO2, 2
         );
-        final Map<Currency, Integer> actual = subject.releaseCoins(needed);
+        final Map<CurrencyCoins, Integer> actual = subject.releaseCoins(needed);
         assertThat(actual).isEqualTo(needed);
         assertThat(subject.getInventory()).containsExactlyInAnyOrder(
                 new Tuple2<>(CENT10, 1),
@@ -100,15 +99,15 @@ public class CashBoxTest {
 
     @Test
     public void testInsertCoin() {
-        final Map<Currency, Integer> inventory = HashMap.of(
+        final Map<CurrencyCoins, Integer> inventory = HashMap.of(
                 CENT10, 2,
                 CENT20, 2,
                 EURO2, 5
         );
-        final CashBox subject = new CashBox(inventory);
+        final CashUnit subject = new CashUnit(inventory);
 
         subject.insertCoins(EURO2, EURO1, CENT10, CENT50, CENT10);
-        final Map<Currency, Integer> actual = subject.getInventory();
+        final Map<CurrencyCoins, Integer> actual = subject.getInventory();
         assertThat(actual).containsExactlyInAnyOrder(
                 new Tuple2<>(CENT10, 4),
                 new Tuple2<>(CENT20, 2),
@@ -119,28 +118,28 @@ public class CashBoxTest {
 
     @Test
     public void testNeededForExchange() {
-        final Map<Currency, Integer> inventory = HashMap.of(
+        final Map<CurrencyCoins, Integer> inventory = HashMap.of(
                 CENT10, 10,
                 CENT20, 5,
                 CENT50, 5,
                 EURO1, 5
         );
-        final CashBox subject = new CashBox(inventory);
+        final CashUnit subject = new CashUnit(inventory);
 
-        final Map<Currency, Integer> actual = subject.neededForExchange(130, EURO2);
+        final Map<CurrencyCoins, Integer> actual = subject.neededForExchange(130, EURO2);
         assertThat(actual).containsExactlyInAnyOrder(new Tuple2<>(CENT50, 1), new Tuple2<>(CENT20, 1));
     }
 
     @Test
     public void testNeededForExchange_secondExample() {
-        final Map<Currency, Integer> inventory = HashMap.of(
+        final Map<CurrencyCoins, Integer> inventory = HashMap.of(
                 CENT10, 10,
                 CENT20, 2,
                 EURO1, 5
         );
-        final CashBox subject = new CashBox(inventory);
+        final CashUnit subject = new CashUnit(inventory);
 
-        final Map<Currency, Integer> actual = subject.neededForExchange(110, EURO2);
+        final Map<CurrencyCoins, Integer> actual = subject.neededForExchange(110, EURO2);
         assertThat(subject.enoughCoinsAvailable(actual)).isFalse();
         // assertThat(actual).containsExactlyInAnyOrder(new Tuple2<>(CENT20, 2), new Tuple2<>(CENT10, 5));
 
@@ -150,27 +149,27 @@ public class CashBoxTest {
 
     @Test
     public void testExchange_allGood() {
-        final Map<Currency, Integer> inventory = HashMap.of(
+        final Map<CurrencyCoins, Integer> inventory = HashMap.of(
                 CENT10, 10,
                 CENT20, 5,
                 CENT50, 5,
                 EURO1, 5
         );
-        final CashBox subject = new CashBox(inventory);
+        final CashUnit subject = new CashUnit(inventory);
 
-        final Option<Map<Currency, Integer>> actual = subject.exchange(130, EURO2);
+        final Option<Map<CurrencyCoins, Integer>> actual = subject.exchange(130, EURO2);
         assertThat(actual.get()).containsExactlyInAnyOrder(new Tuple2<>(CENT50, 1), new Tuple2<>(CENT20, 1));
     }
 
     @Test
     public void testExchange_moneyInInventoryIsMissing() {
-        final Map<Currency, Integer> inventory = HashMap.of(
+        final Map<CurrencyCoins, Integer> inventory = HashMap.of(
                 CENT10, 0,
                 CENT20, 0
         );
-        final CashBox subject = new CashBox(inventory);
+        final CashUnit subject = new CashUnit(inventory);
 
-        final Option<Map<Currency, Integer>> actual = subject.exchange(130, EURO2);
+        final Option<Map<CurrencyCoins, Integer>> actual = subject.exchange(130, EURO2);
         assertThat(actual).isEqualTo(Option.none());
     }
 }

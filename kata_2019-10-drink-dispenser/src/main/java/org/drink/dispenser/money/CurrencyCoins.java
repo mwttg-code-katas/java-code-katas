@@ -2,6 +2,6 @@ package org.drink.dispenser.money;
 
 import java.util.Comparator;
 
-public interface Currency extends Comparator<Integer> {
+public interface CurrencyCoins extends Comparator<Integer> {
   int value();
 }
