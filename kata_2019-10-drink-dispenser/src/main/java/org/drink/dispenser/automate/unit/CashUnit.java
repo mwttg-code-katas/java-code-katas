@@ -6,6 +6,8 @@ import io.vavr.collection.Map;
 import io.vavr.control.Option;
 import org.drink.dispenser.money.CurrencyCoins;
 
+import static org.drink.dispenser.Utilities.sumValues;
+
 public class CashUnit extends Unit<CurrencyCoins> {
 
     public CashUnit(final Map<CurrencyCoins, Integer> inventory) {
@@ -13,7 +15,7 @@ public class CashUnit extends Unit<CurrencyCoins> {
     }
 
     public Option<Map<CurrencyCoins, Integer>> exchange(final int price, final CurrencyCoins... insertCoins) {
-        final int insertValue = List.of(insertCoins).map(CurrencyCoins::value).sum().intValue();
+        final int insertValue = sumValues(insertCoins);
 
         Map<CurrencyCoins, Integer> exchange = HashMap.empty();
         int restExchangeValue = insertValue - price;

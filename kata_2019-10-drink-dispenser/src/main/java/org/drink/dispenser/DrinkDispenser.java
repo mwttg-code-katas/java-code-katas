@@ -3,10 +3,10 @@ package org.drink.dispenser;
 import io.vavr.Tuple2;
 import io.vavr.collection.Map;
 import io.vavr.control.Option;
+import org.drink.dispenser.automate.unit.BeverageUnit;
+import org.drink.dispenser.automate.unit.CashUnit;
 import org.drink.dispenser.commodity.Commodity;
 import org.drink.dispenser.money.CurrencyCoins;
-import org.drink.dispenser.automate.unit.CashUnit;
-import org.drink.dispenser.automate.unit.BeverageUnit;
 
 import static io.vavr.API.$;
 import static io.vavr.API.Case;
@@ -29,10 +29,14 @@ public class DrinkDispenser {
         return Match(maybe).of(
                 Case($Some($()), (Commodity item) -> {
                     final Option<Map<CurrencyCoins, Integer>> maybeExchange = cashUnit.exchange(item.price(), coins);
-                    return Match(maybeExchange).of(
-                            Case($Some($()), exchange -> new Tuple2<>(Option.some(item), exchange)),
-                            Case($None(), new Tuple2<>(Option.none(), Utilities.toMap(coins)))
-                    );
+                    if (item.price() > Utilities.sumValues(coins)) {
+                        return new Tuple2<>(Option.none(), toMap(coins));
+                    } else {
+                        return Match(maybeExchange).of(
+                                Case($Some($()), exchange -> new Tuple2<>(Option.some(item), exchange)),
+                                Case($None(), new Tuple2<>(Option.none(), Utilities.toMap(coins)))
+                        );
+                    }
                 }),
                 Case($None(), new Tuple2<>(Option.none(), toMap(coins)))
         );

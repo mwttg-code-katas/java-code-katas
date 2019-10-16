@@ -21,7 +21,7 @@ import static org.drink.dispenser.money.Euro.EURO2;
 public class DrinkDispenserTest {
 
     @Test
-    public void testBuy() {
+    public void testBuy_allGood() {
         final Map<CurrencyCoins, Integer> cash = HashMap.of(
                 EURO2, 100,
                 EURO1, 100,
@@ -41,6 +41,50 @@ public class DrinkDispenserTest {
                 new Tuple2<>(CENT50, 1),
                 new Tuple2<>(CENT20, 1),
                 new Tuple2<>(CENT10, 1)
+        );
+    }
+
+    @Test
+    public void testBuy_notEnoughPayed() {
+        final Map<CurrencyCoins, Integer> cash = HashMap.of(
+                EURO2, 100,
+                EURO1, 100,
+                CENT50, 100,
+                CENT20, 100,
+                CENT10, 100);
+
+        final Map<Commodity, Integer> commodity = HashMap.of(
+                WATER, 50,
+                NUKA_COLA, 50,
+                DUFF_BEER, 50);
+        final DrinkDispenser subject = new DrinkDispenser(cash, commodity);
+
+        final Tuple2<Option<Commodity>, Map<CurrencyCoins, Integer>> actual = subject.buy(NUKA_COLA, EURO1);
+        assertThat(actual._1()).isEqualTo(Option.none());
+        assertThat(actual._2()).containsExactlyInAnyOrder(
+                new Tuple2<>(EURO1, 1)
+        );
+    }
+
+    @Test
+    public void testBuy_drinkEmpty() {
+        final Map<CurrencyCoins, Integer> cash = HashMap.of(
+                EURO2, 100,
+                EURO1, 100,
+                CENT50, 100,
+                CENT20, 100,
+                CENT10, 100);
+
+        final Map<Commodity, Integer> commodity = HashMap.of(
+                WATER, 50,
+                NUKA_COLA, 0,
+                DUFF_BEER, 50);
+        final DrinkDispenser subject = new DrinkDispenser(cash, commodity);
+
+        final Tuple2<Option<Commodity>, Map<CurrencyCoins, Integer>> actual = subject.buy(NUKA_COLA, EURO2);
+        assertThat(actual._1()).isEqualTo(Option.none());
+        assertThat(actual._2()).containsExactlyInAnyOrder(
+                new Tuple2<>(EURO2, 1)
         );
     }
 }
