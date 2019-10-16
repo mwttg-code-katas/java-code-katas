@@ -30,15 +30,15 @@ public class DrinkDispenser {
                 Case($Some($()), (Commodity item) -> {
                     final Option<Map<CurrencyCoins, Integer>> maybeExchange = cashUnit.exchange(item.price(), coins);
                     if (item.price() > Utilities.sumValues(coins)) {
-                        return new Tuple2<>(Option.none(), toMap(coins));
+                        return new Tuple2<>(Option.none(), toMap(coins));   // not enough payed
                     } else {
-                        return Match(maybeExchange).of(
+                        return Match(maybeExchange).of(                     // all good
                                 Case($Some($()), exchange -> new Tuple2<>(Option.some(item), exchange)),
                                 Case($None(), new Tuple2<>(Option.none(), Utilities.toMap(coins)))
                         );
                     }
                 }),
-                Case($None(), new Tuple2<>(Option.none(), toMap(coins)))
+                Case($None(), new Tuple2<>(Option.none(), toMap(coins)))    // drink is empty
         );
     }
 
