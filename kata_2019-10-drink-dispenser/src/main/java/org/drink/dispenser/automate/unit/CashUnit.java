@@ -6,8 +6,6 @@ import io.vavr.collection.Map;
 import io.vavr.control.Option;
 import org.drink.dispenser.money.CurrencyCoins;
 
-import static org.drink.dispenser.Utilities.toList;
-
 public class CashUnit extends Unit<CurrencyCoins> {
 
     public CashUnit(final Map<CurrencyCoins, Integer> inventory) {
@@ -15,64 +13,34 @@ public class CashUnit extends Unit<CurrencyCoins> {
     }
 
     public Option<Map<CurrencyCoins, Integer>> exchange(final int price, final CurrencyCoins... insertCoins) {
-        final Map<CurrencyCoins, Integer> neededExchange = neededForExchange(price, insertCoins);
-        if (enoughCoinsAvailable(neededExchange)) {
-            insertCoins(insertCoins);
-            return Option.some(releaseCoins(neededExchange));
-        } else {
-            return Option.none();
-        }
-    }
+        final int insertValue = List.of(insertCoins).map(CurrencyCoins::value).sum().intValue();
 
-    // TODO fix 'feature' ;)
-    Map<CurrencyCoins, Integer> neededForExchange(final int price, final CurrencyCoins... insert) {
-        final int inputValue = List.of(insert).map(CurrencyCoins::value).sum().intValue();
-        final int exchangeValue = inputValue - price;
-
-        Map<CurrencyCoins, Integer> neededForExchange = HashMap.empty();
-        int needed = exchangeValue;
-        // well, not perfect - drink-dispenser only exchanges in smallest amount of coins possible ;)
+        Map<CurrencyCoins, Integer> exchange = HashMap.empty();
+        int restExchangeValue = insertValue - price;
         for (final CurrencyCoins coin : availableCoins()) {
-            final int quotient = needed / coin.value();
-
-            if (quotient == 0) {
+            final int forExchangeNeededCoins = restExchangeValue / coin.value();
+            if (forExchangeNeededCoins == 0) {
                 continue;
             }
 
-            needed = needed - (coin.value() * quotient);
-            neededForExchange = neededForExchange.put(coin, quotient);
+            final int exchangeAmountOfCoin = adjustExchangeableSortOfCoin(forExchangeNeededCoins, coin);
+            restExchangeValue = restExchangeValue - (coin.value() * exchangeAmountOfCoin);
+            exchange = exchange.put(coin, exchangeAmountOfCoin);
         }
 
-        return neededForExchange;
+        if (restExchangeValue != 0) {
+            return Option.none();
+        } else {
+            return Option.some(exchange);
+        }
     }
 
-    void insertCoins(final CurrencyCoins... coins) {
-        toList(coins).forEach(coin -> {
-            final int currentAmount = getInventory().getOrElse(coin, 0);
-            setInventory(getInventory().put(coin, currentAmount + 1));
-        });
-    }
-
-    Map<CurrencyCoins, Integer> releaseCoins(final Map<CurrencyCoins, Integer> needed) {
-        needed.forEach(entry -> {
-            final CurrencyCoins key = entry._1;
-            final int amount = entry._2;
-            final int currentAmount = getInventory().get(key).get(); // checked before -> #enoughCoinsAvailable
-            setInventory(getInventory().put(key, currentAmount - amount));
-        });
-        return needed;
-    }
-
-    boolean enoughCoinsAvailable(final Map<CurrencyCoins, Integer> neededForExchange) {
-        return neededForExchange.map(tuple -> {
-            final CurrencyCoins coin = tuple._1;
-            final int neededAmount = tuple._2;
-            final int availableAmount = getInventory().getOrElse(coin, 0);
-            return neededAmount <= availableAmount;
-        }).foldLeft(true, (accumulator, current) -> accumulator && current);
+    private int adjustExchangeableSortOfCoin(final int needed, final CurrencyCoins coin) {
+        final int available = getInventory().get(coin).getOrElse(0);
+        return Math.min(needed, available);
     }
 
     List<CurrencyCoins> availableCoins() {
-        return getInventory().keySet().toList().sorted().reverse();
+        return getInventory().filter(entry -> entry._2() != 0).keySet().toList().sorted().reverse();
     }
 }

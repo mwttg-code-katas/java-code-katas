@@ -18,7 +18,7 @@ import static org.drink.dispenser.money.Euro.CENT50;
 import static org.drink.dispenser.money.Euro.EURO1;
 import static org.drink.dispenser.money.Euro.EURO2;
 
-public class BeverageDispenserTest {
+public class DrinkDispenserTest {
 
     @Test
     public void testBuy() {

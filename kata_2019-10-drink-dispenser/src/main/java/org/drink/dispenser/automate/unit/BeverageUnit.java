@@ -4,14 +4,12 @@ import io.vavr.collection.Map;
 import io.vavr.control.Option;
 import org.drink.dispenser.commodity.Commodity;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static io.vavr.API.$;
 import static io.vavr.API.Case;
 import static io.vavr.API.Match;
 import static io.vavr.Patterns.$None;
 import static io.vavr.Patterns.$Some;
 
-// TODO think about extracting similarities of DrinkBox and CashBox (the Maps + methods)
 public class BeverageUnit extends Unit<Commodity> {
 
     public BeverageUnit(final Map<Commodity, Integer> inventory) {
