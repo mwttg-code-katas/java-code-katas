@@ -1,4 +1,5 @@
 rootProject.name = 'java-code-katas'
 include 'commons'
 include 'kata_2018-12-number-scanner'
+include 'kata_2019-10-drink-dispenser'
 
