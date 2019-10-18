@@ -45,6 +45,12 @@ The automate will return the Nuka Cola and the exchange money:
 * one 20 cent coin
 * one 10 cent coin
 
+or
+
+* 4 x 20 cent coins
+
+It depends how much money is inside the vending machine, and how you implement the 'exchange' function/method.
+
 ### Bonus Task
 
 Add some more flexibility, like:
