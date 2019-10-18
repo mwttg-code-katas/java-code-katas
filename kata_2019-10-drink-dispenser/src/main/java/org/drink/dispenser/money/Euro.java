@@ -1,6 +1,6 @@
 package org.drink.dispenser.money;
 
-public enum Euro implements CurrencyCoins {
+public enum Euro implements Currency {
     CENT10(10),
 
     CENT20(20),

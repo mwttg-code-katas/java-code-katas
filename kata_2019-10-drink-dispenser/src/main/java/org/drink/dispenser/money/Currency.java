@@ -1,5 +1,5 @@
 package org.drink.dispenser.money;
 
-public interface CurrencyCoins {
+public interface Currency {
     int value();
 }

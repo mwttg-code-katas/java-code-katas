@@ -10,19 +10,19 @@ import static io.vavr.API.Match;
 import static io.vavr.Patterns.$None;
 import static io.vavr.Patterns.$Some;
 
-public class BeverageUnit extends Unit<Commodity> {
+public class CommodityUnit<T extends Commodity> extends Unit<T> {
 
-    public BeverageUnit(final Map<Commodity, Integer> inventory) {
+    public CommodityUnit(final Map<T, Integer> inventory) {
         super(inventory);
     }
 
-    public Option<Commodity> releaseDrink(final Commodity drink) {
-        final Option<Integer> maybe = getInventory().get(drink);
+    public Option<T> releaseCommodity(final T commodity) {
+        final Option<Integer> maybe = getInventory().get(commodity);
         return Match(maybe).of(
                 Case($Some($()), amount -> {
                     if (amount > 0) {
-                        setInventory(getInventory().put(drink, amount - 1));
-                        return Option.some(drink);
+                        setInventory(getInventory().put(commodity, amount - 1));
+                        return Option.some(commodity);
                     } else {
                         return Option.none();
                     }
